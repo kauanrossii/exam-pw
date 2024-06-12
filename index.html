@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1>Portal de Notícias do IBGE</h1>
-        <form class="search-bar-form">
-            <input type="text" class="search-bar-input" placeholder="Buscar notícia por termo">
-            <button type="submit" class="search-bar-button">🔍</button>
-        </form>
+      <h1>Portal de Notícias do IBGE</h1>
+      <form class="search-bar-form">
+        <input
+          type="text"
+          class="search-bar-input"
+          placeholder="Buscar notícia por termo"
+        />
+        <button type="submit" class="search-bar-button">🔍</button>
+      </form>
+      <svg
+        class="filter-icon"
+        width="20"
+        height="20"
+        fill="#f0f0f0"
+        viewBox="0 0 80 90"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="m 0,0 30,45 0,30 10,15 0,-45 30,-45 Z"></path>
+      </svg>
     </header>
     <main></main>
+    <dialog class="filter-dialog">
+      <div class="dialog-fields">
+        <div class="dialog-field">
+          <label for="">Tipo:</label>
+          <select>
+            <option value="noticia">Notícia</option>
+            <option value="release">Release</option>
+          </select>
+        </div>
+        <div class="dialog-field">
+          <label for="">Quantidade</label>
+          <select name="quantity" id="field-quantity">
+            <option value="5">5</option>
+            <option value="5">10</option>
+            <option value="5">15</option>
+            <option value="5">20</option>
+          </select>
+        </div>
+        <div class="dialog-field">
+          <label for="">De:</label>
+          <input type="date" name="start-date" id="field-start-date" />
+        </div>
+        <div class="dialog-field">
+          <label for="end-date">Até:</label>
+          <input type="date" name="end-date" id="filter-end-date" />
+        </div>
+      </div>
+      <button class="dialog-button" type="submit">Aplicar</button>
+    </dialog>
     <footer></footer>
-</body>
-
+    <script src="index.js"></script>
+  </body>
 </html>
