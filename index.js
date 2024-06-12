@@ -1,18 +1,40 @@
 window.onload = async () => {
     const response = await fetch("https://servicodados.ibge.gov.br/api/v3/noticias?qtd=10");
     const json = await response.json();
+
+    const newsListElement = document.querySelector(".list-news");
     
-    const filterIcon = document.querySelector(".filter-icon");
-    filterIcon.addEventListener("click", () => {
-        const dialog = document.querySelector(".filter-dialog");
-        dialog.showModal();
-    })
+    json.items.forEach(news => {
+        const newsItemElement = createNewsItem(news);
+        newsListElement.appendChild(newsItemElement);
+    });
+}
 
-    const main = document.querySelector("main");
+function createNewsItem(news) {    
+    const newsItemElement = document.createElement("li");
+    newsItemElement.innerHTML = `
+        <div class="container-news-image">
 
-    for (let news of json.items) {
-        const paragraphElement = document.createElement("p");
-        paragraphElement.textContent = news.titulo;
-        main.appendChild(paragraphElement);
-    }
+        </div>
+        <div class="container-news-content">
+            <h2>${news.titulo}</h2>
+            <p>${news.introducao}</p>
+            <div class="container-news-tags">
+                <span>#${news.editorias}</span>
+                <span>${news.data_publicacao}</span>
+            </div>
+            <a class="link-news-details" href="${news.link}">Leia mais</a>
+        </div>
+    `;
+    return newsItemElement;
+}
+
+function openDialog() {
+    const dialog = document.querySelector(".filter-dialog");
+    dialog.showModal();
+}
+
+function closeDialog() {
+    const dialog = document.querySelector(".filter-dialog");
+    dialog.close();
 }
