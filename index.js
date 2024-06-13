@@ -1,5 +1,8 @@
 window.onload = async () => {
-    const response = await fetch("https://servicodados.ibge.gov.br/api/v3/noticias?qtd=10");
+    const searchParams = new URLSearchParams(document.location.search);
+    const apiUrl = "https://servicodados.ibge.gov.br/api/v3/noticias";
+
+    const response = await fetch(apiUrl + '?' + searchParams.toString());
     const json = await response.json();
 
     const newsListElement = document.querySelector(".list-news");
@@ -14,7 +17,6 @@ window.onload = async () => {
 async function createNewsItem(news) {
     const imagesCollection = await JSON.parse(news.imagens);
     const newsItemElement = document.createElement("li");
-    console.log(imagesCollection)
     newsItemElement.innerHTML = `
         <img class="news-image" src="https://agenciadenoticias.ibge.gov.br/${imagesCollection.image_intro}">
         <div class="container-news-content">
@@ -40,4 +42,29 @@ function openDialog() {
 function closeDialog() {
     const dialog = document.querySelector(".filter-dialog");
     dialog.close();
+}
+
+function applyFilters(event) {
+    event.preventDefault();
+    const formElement = document.querySelector(".filter-form");
+    const formData = new FormData(formElement);
+    let urlParams = new URLSearchParams(window.location.search);
+
+    for (let data of formData.entries()) {
+        // const { key, value } = data;
+        console.log(key, value);
+        if (data[1] != "" && data[1] != "none") {
+            urlParams.set(data[0], data[1]);
+        }
+    }
+
+    window.location.search = urlParams.toString();
+}
+
+function filterNewsByTitle(event) {
+    event.preventDefault();
+    const searchInput = document.querySelector(".search-bar-input");
+    let urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('busca', searchInput.value);
+    window.location.search = urlParams.toString();
 }

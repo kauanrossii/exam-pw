@@ -8,7 +8,6 @@
   </head>
 
   <body>
-    
     <header>
       <h1>Portal de Notícias do IBGE</h1>
       <form class="search-bar-form">
@@ -17,7 +16,13 @@
           class="search-bar-input"
           placeholder="Buscar notícia por termo"
         />
-        <button type="submit" class="search-bar-button">🔍</button>
+        <button
+          type="submit"
+          onclick="filterNewsByTitle(event)"
+          class="search-bar-button"
+        >
+          🔍
+        </button>
       </form>
       <svg
         onclick="openDialog()"
@@ -32,46 +37,53 @@
         <path d="m 0,0 30,45 0,30 10,15 0,-45 30,-45 Z"></path>
       </svg>
     </header>
-    
+
     <main>
       <ul class="list-news"></ul>
     </main>
-    
+
     <dialog class="filter-dialog">
-      <div class="dialog-fields">
-        <div class="dialog-field">
-          <label for="">Tipo:</label>
-          <select>
-            <option value="noticia">Notícia</option>
-            <option value="release">Release</option>
-          </select>
+      <form class="filter-form">
+        <div class="dialog-fields">
+          <div class="dialog-field">
+            <label for="type">Tipo:</label>
+            <select name="tipo" id="field-type">
+              <option value="none">Selecione</option>
+              <option value="noticia">Notícia</option>
+              <option value="release">Release</option>
+            </select>
+          </div>
+          <div class="dialog-field">
+            <label for="">Quantidade</label>
+            <select name="qtd" id="field-quantity">
+              <option value="5">5</option>
+              <option value="5">10</option>
+              <option value="5">15</option>
+              <option value="5">20</option>
+            </select>
+          </div>
+          <div class="dialog-field">
+            <label for="de">De:</label>
+            <input type="date" name="de" id="field-start-date" />
+          </div>
+          <div class="dialog-field">
+            <label for="ate">Até:</label>
+            <input type="date" name="ate" id="filter-end-date" />
+          </div>
         </div>
-        <div class="dialog-field">
-          <label for="">Quantidade</label>
-          <select name="quantity" id="field-quantity">
-            <option value="5">5</option>
-            <option value="5">10</option>
-            <option value="5">15</option>
-            <option value="5">20</option>
-          </select>
-        </div>
-        <div class="dialog-field">
-          <label for="">De:</label>
-          <input type="date" name="start-date" id="field-start-date" />
-        </div>
-        <div class="dialog-field">
-          <label for="end-date">Até:</label>
-          <input type="date" name="end-date" id="filter-end-date" />
-        </div>
-      </div>
-      <button class="dialog-button" type="submit">Aplicar</button>
+        <button
+          class="dialog-button"
+          type="button"
+          onclick="applyFilters(event)"
+        >
+          Aplicar
+        </button>
+      </form>
       <span class="dialog-close-icon" onclick="closeDialog()">X</span>
     </dialog>
-    
-    <footer>
 
-    </footer>
-    
+    <footer></footer>
+
     <script src="index.js"></script>
   </body>
 </html>
