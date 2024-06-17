@@ -1,8 +1,15 @@
+const initialPage = 1;
+const initialQuantity = 10;
+const initialLastDate = "";
+const initialStartDate = "";
+const initialType = "";
+
 let currentPage = 1;
 let currentQuantity = 10;
 let currentStartDate;
 let currentLastDate;
 let totalPages;
+let currentType;
 
 window.onload = async () => {
     const searchParams = new URLSearchParams(document.location.search);
@@ -11,8 +18,8 @@ window.onload = async () => {
     const response = await fetch(apiUrl + '?' + searchParams.toString());
     const json = await response.json();
     totalPages = json.totalPages;
-    updateFiltersByQueryString();
-
+    updateSearchByQueryString();
+    updateFiltersNumberByQueryString();
     const newsListElement = document.querySelector(".list-news");
 
     json.items.forEach(async (news) => {
@@ -57,12 +64,46 @@ function insertEditorialsTags(news) {
     }
 }
 
-function updateFiltersByQueryString() {
+function updateSearchByQueryString() {
+    const filterNumberContainer = document.querySelector(".filter-number-container");
     const searchParams = new URLSearchParams(document.location.search);
-    const pageParam = searchParams.get('page'); 
-    if (pageParam && pageParam != "") {
+    const pageParam = searchParams.get('page');
+    const quantityParam = searchParams.get('qtd');
+    const startDateParam = searchParams.get('de');
+    const lastDateParam = searchParams.get('ate');
+    const typeParam = searchParams.get('tipo');
+
+    let quantityFilters = 0;
+
+    if (pageParam != initialPage) {
         currentPage = Number(pageParam);
     }
+
+    if (quantityParam != initialQuantity) {
+        currentQuantity = Number(quantityParam);
+        quantityFilters++;
+    }
+
+    if (startDateParam != initialStartDate) {
+        currentStartDate = startDateParam;
+        quantityFilters++;
+    }
+
+    if (lastDateParam != initialLastDate) {
+        currentLastDate = lastDateParam;
+        quantityFilters++;
+    }
+
+    if (typeParam != initialType) {
+        currentType = typeParam;
+        quantityFilters++;
+    }
+    
+    filterNumberContainer.textContent = quantityFilters;
+}
+
+function updateFiltersNumberByQueryString() {
+
 }
 
 function createNewsDateString(rawDate) {
