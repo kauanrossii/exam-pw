@@ -19,6 +19,7 @@ window.onload = async () => {
         const newsItemElement = await createNewsItem(news);
         newsListElement.appendChild(newsItemElement);
         newsListElement.appendChild(document.createElement('br'))
+        insertEditorialsTags(news);
     });
 
     insertPaginationButtons();
@@ -34,7 +35,8 @@ async function createNewsItem(news) {
             <h2>${news.titulo}</h2>
             <p>${news.introducao}</p>
             <div class="container-news-tags">
-                <span>#${news.editorias}</span>
+                <div class="container-editorials" data-editorials-id="${news.id}">
+                </div>
                 <span>${newsDateString}</span>
             </div>
             <a class="link-news-details" href="${news.link}">
@@ -43,6 +45,16 @@ async function createNewsItem(news) {
         </div>
     `;
     return newsItemElement;
+}
+
+function insertEditorialsTags(news) {
+    const editorialsContainer = document.querySelector(`[data-editorials-id='${news.id}']`);
+    const editorials = news.editorias.split(";");
+    for (let i = 0; i < editorials.length; i++) {
+        const spanElement = document.createElement("span");
+        spanElement.textContent = "#" + editorials[i];
+        editorialsContainer.appendChild(spanElement)
+    }
 }
 
 function updateFiltersByQueryString() {
@@ -92,7 +104,6 @@ function applyFilters(event) {
     let urlParams = new URLSearchParams(window.location.search);
 
     for (let data of formData.entries()) {
-        // const { key, value } = data;
         if (data[1] != "none") {
             urlParams.set(data[0], data[1]);
         }
