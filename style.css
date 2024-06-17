@@ -49,7 +49,7 @@ main {
     background-color: #f0f0f0;
     box-sizing: content-box;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
@@ -157,9 +157,8 @@ dialog button,
 .list-news li {
     display: flex;
     gap: 15px;
-    height: 100%;
+    height: 230px;
     width: 100%;
-    list-style: none;
     margin-top: 20px;
 }
 
@@ -183,6 +182,7 @@ dialog button,
 .link-news-details button {
     width: 100%;
     height: 100%;
+    min-height: 30px;
     border-radius: 6px;
     border: none;
     cursor: pointer;
@@ -196,11 +196,42 @@ dialog button,
 .container-news-content {
     width: 70%;
     display: flex;
+    box-sizing: content-box;
     flex-direction: column;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 .container-news-tags {
     display: flex;
     justify-content: space-between;
+}
+
+li {
+    list-style: none;
+}
+
+.list-pages {
+    display: flex;
+    gap: 5px;
+}
+
+.list-pages li button {
+    background-color: transparent;
+    border: 1px solid #4682b4;
+    color: #4682b4;
+    font-weight: bold;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.list-pages li button:hover {
+    background-color: #4682b4;
+    color: #f0f0f0;
+    transition: all 500ms ease;
+}
+
+.list-pages li button[data-current="true"] {
+    background-color: #4682b4;
+    color: #f0f0f0;
 }

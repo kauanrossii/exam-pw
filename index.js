@@ -2,6 +2,7 @@ let currentPage = 1;
 let currentQuantity = 10;
 let currentStartDate;
 let currentLastDate;
+let totalPages;
 
 window.onload = async () => {
     const searchParams = new URLSearchParams(document.location.search);
@@ -9,9 +10,11 @@ window.onload = async () => {
 
     const response = await fetch(apiUrl + '?' + searchParams.toString());
     const json = await response.json();
+    totalPages = json.totalPages;
+    updateFiltersByQueryString();
 
     const newsListElement = document.querySelector(".list-news");
-    
+
     json.items.forEach(async (news) => {
         const newsItemElement = await createNewsItem(news);
         newsListElement.appendChild(newsItemElement);
@@ -42,9 +45,17 @@ async function createNewsItem(news) {
     return newsItemElement;
 }
 
-function createNewsDateString(rawDate) { 
+function updateFiltersByQueryString() {
+    const searchParams = new URLSearchParams(document.location.search);
+    const pageParam = searchParams.get('page'); 
+    if (pageParam && pageParam != "") {
+        currentPage = Number(pageParam);
+    }
+}
+
+function createNewsDateString(rawDate) {
     const daysDifference = getNewsDateDifferenceInDays(rawDate);
-    
+
     if (daysDifference == 0) {
         return "Publicado hoje";
     }
@@ -86,7 +97,7 @@ function applyFilters(event) {
             urlParams.set(data[0], data[1]);
         }
     }
-    
+
     window.location.search = urlParams.toString();
 }
 
@@ -96,4 +107,58 @@ function filterNewsByTitle(event) {
     let urlParams = new URLSearchParams(window.location.search);
     urlParams.set('busca', searchInput.value);
     window.location.search = urlParams.toString();
+}
+
+function insertPaginationButtons() {
+    const pageList = document.querySelector(".list-pages");
+    insertGoBackButton(pageList);
+    insertPageButtons(pageList);
+    insertGoForwardButton(pageList);
+}
+
+function insertGoBackButton(pageList) {
+    const listItem = createListItemButton('<');
+    pageList.appendChild(listItem);
+}
+
+function insertGoForwardButton(pageList) {
+    const listItem = createListItemButton('>');
+    pageList.appendChild(listItem);
+}
+
+function createListItemButton(content) {
+    const buttonElement = document.createElement("button");
+    buttonElement.textContent = content;
+    if (content == currentPage) {
+        buttonElement.dataset.current = true;
+    }
+    buttonElement.addEventListener("click", (e) => setCurrentPageAccordingPageButton(e));
+    const listItemElement = document.createElement("li");
+    listItemElement.appendChild(buttonElement);
+    return listItemElement;
+}
+
+function insertPageButtons(pageList) {
+    const maxVisiblePages = 10;
+    const pagesBegin = currentPage > 6 ? currentPage - 5 : 1;
+    const pagesFinal = Math.min(pagesBegin + maxVisiblePages - 1, totalPages);
+
+    for (let i = pagesBegin; i <= pagesFinal; i++) {
+        const listItem = createListItemButton(i);
+        pageList.appendChild(listItem);
+    }
+}
+
+function setCurrentPageAccordingPageButton(e) {
+    const buttonContent = e.target.textContent;
+    if (buttonContent == `<`) {
+        currentPage--;
+    } else if (buttonContent == '>') {
+        currentPage++;
+    } else {
+        currentPage = buttonContent; 
+    }
+    const searchParams = new URLSearchParams(document.location.search);
+    searchParams.set('page', currentPage.toString());
+    window.location.search = searchParams.toString();
 }
