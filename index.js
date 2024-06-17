@@ -72,33 +72,33 @@ function updateSearchByQueryString() {
     const startDateParam = searchParams.get('de');
     const lastDateParam = searchParams.get('ate');
     const typeParam = searchParams.get('tipo');
-
+    console.log(quantityParam);
     let quantityFilters = 0;
 
     if (pageParam != initialPage) {
         currentPage = Number(pageParam);
     }
 
-    if (quantityParam != initialQuantity) {
+    if (quantityParam && quantityParam != initialQuantity) {
         currentQuantity = Number(quantityParam);
         quantityFilters++;
     }
 
-    if (startDateParam != initialStartDate) {
+    if (startDateParam && startDateParam != initialStartDate) {
         currentStartDate = startDateParam;
         quantityFilters++;
     }
 
-    if (lastDateParam != initialLastDate) {
+    if (lastDateParam && lastDateParam != initialLastDate) {
         currentLastDate = lastDateParam;
         quantityFilters++;
     }
 
-    if (typeParam != initialType) {
+    if (typeParam && typeParam != initialType) {
         currentType = typeParam;
         quantityFilters++;
     }
-    
+
     filterNumberContainer.textContent = quantityFilters;
 }
 
